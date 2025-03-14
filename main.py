@@ -34,9 +34,9 @@ def main():
             if syllable in word:
                 try:
                     input_box.send_keys(word, Keys.RETURN)
+                    word_list.remove(word)
                 except:
                     ...
-                word_list.remove(word)
                 break
 
         sleep(0.1)
