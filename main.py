@@ -5,24 +5,38 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 from random import randint
+import re
+from colorama import Fore, Style
 
-with open("words.txt", "r") as f:
-    word_list = f.read().split("\n")
+def get_link() -> str:
+    while True:
+        link = input(Fore.YELLOW + "Enter link: " + Style.RESET_ALL)
+
+        if re.match(r"https://jklm\.fun/.*", link):
+            break
+    
+        print(Fore.RED + "Invalid link" + Style.RESET_ALL)
+    
+    return link
+
+def get_words() -> list:
+    with open("words.txt", "r") as f:
+        return f.read().split("\n")
 
 def main():
-    link = input("Enter link: ")
+    link = get_link()
+    word_list = get_words()
 
     driver = webdriver.Chrome()
+    wait = WebDriverWait(driver, 1e6)
 
     driver.get(link)
 
-    input("Press ENTER when game has loaded...")
+    input(Fore.GREEN + "Press ENTER when game has loaded..." + Style.RESET_ALL)
 
     iframe = None
 
     while True:
-        wait = WebDriverWait(driver, 1e6)
-
         if not iframe:
             iframe = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "iframe")))
             driver.switch_to.frame(iframe)
@@ -34,7 +48,7 @@ def main():
         for word in word_list:
             if syllable in word:
                 try:
-                    delay = (randint(5, 10) * 0.1) / len(word)
+                    delay = (randint(1, 5) * 0.1) / len(word)
                     
                     for char in word:
                         input_box.send_keys(char)
