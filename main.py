@@ -4,6 +4,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from time import sleep
+from random import randint
 
 with open("words.txt", "r") as f:
     word_list = f.read().split("\n")
@@ -33,7 +34,13 @@ def main():
         for word in word_list:
             if syllable in word:
                 try:
-                    input_box.send_keys(word, Keys.RETURN)
+                    delay = (randint(5, 10) * 0.1) / len(word)
+                    
+                    for char in word:
+                        input_box.send_keys(char)
+                        sleep(delay)
+                    input_box.send_keys(Keys.RETURN)
+
                     word_list.remove(word)
                 except:
                     ...
