@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -7,6 +9,12 @@ from time import sleep
 from random import randint
 import re
 from colorama import Fore, Style
+
+def get_driver() -> WebDriver:
+    options = Options()
+    options.add_argument("--log-level=2")
+
+    return webdriver.Chrome(options=options)
 
 def get_link() -> str:
     while True:
@@ -27,7 +35,7 @@ def main():
     link = get_link()
     word_list = get_words()
 
-    driver = webdriver.Chrome()
+    driver = get_driver()
     wait = WebDriverWait(driver, 1e6)
 
     driver.get(link)
