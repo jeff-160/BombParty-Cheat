@@ -29,7 +29,7 @@ def get_link() -> str:
 
 def get_words() -> list:
     with open("words.txt", "r") as f:
-        return f.read().split("\n")
+        return sorted(f.read().split("\n"), key=len)
 
 def main():
     link = get_link()
